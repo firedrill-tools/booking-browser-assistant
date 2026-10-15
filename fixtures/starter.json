@@ -1,0 +1,15 @@
+{
+  "synthetic": true,
+  "version": 1,
+  "service": { "id": "svc-consult", "name": "Equipment consultation", "duration_minutes": 30, "location": "Toronto service desk" },
+  "slots": [
+    { "id": "S-101", "starts_at_utc": "2026-11-03T15:00:00Z", "capacity": 1, "booked": 0, "revision": 1 },
+    { "id": "S-102", "starts_at_utc": "2026-11-03T16:00:00Z", "capacity": 1, "booked": 1, "revision": 1 },
+    { "id": "S-103", "starts_at_utc": "2026-11-03T18:00:00Z", "capacity": 1, "booked": 0, "revision": 1 }
+  ],
+  "intents": [],
+  "reservations": [
+    { "id": "R-100", "intent_id": "seeded", "slot_id": "S-102", "starts_at_utc": "2026-11-03T16:00:00Z", "email": "booked@acme.example", "timezone": "America/Toronto" }
+  ],
+  "audit": []
+}

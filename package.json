@@ -1,0 +1,8 @@
+{
+  "name": "booking-browser-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "portal": "node src/server.js", "operate": "node src/operator.js", "test": "node --test tests/*.test.js" },
+  "dependencies": { "@google/genai": "2.30.0", "express": "5.3.0", "playwright": "1.64.1" }
+}
