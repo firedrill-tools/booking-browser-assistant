@@ -28,3 +28,5 @@ The seed offers one available Toronto appointment, one sold-out time, and anothe
 Only `.example` customer addresses are accepted. No real service, payment or notification integration exists. Reset by copying the starter fixture over `workspace.json`. This JSON store is designed for one local process, not concurrent production booking.
 
 `npm test` covers timezone display, sold-out and invalid inputs, changed availability, duplicate confirmation, and a scripted Gemini tool sequence against a real browser and portal. The scripted model verifies tool wiring, not Gemini's live decision quality. Live Gemini proof and the new Firedrill integration remain pending. This private repository has no license pending portfolio publication decisions.
+
+Explore related applications in the [Firedrill example catalog](https://github.com/firedrill-tools/firedrill-example-catalog). Product and setup references: [Firedrill](https://firedrill.run/) and the [official developer documentation](https://docs.firedrill.run/). Use documentation matching the qualified release; this repository records its current integration limits above.
