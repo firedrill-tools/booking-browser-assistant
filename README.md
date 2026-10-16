@@ -1,6 +1,6 @@
 # Booking browser assistant
 
-A Gemini function-calling agent operates a local booking portal through real Playwright browser actions. It searches synthetic appointments, checks sold-out times and IANA timezones, reviews a reservation, and confirms only when the task explicitly authorizes that final step. Every browser observation saves a screenshot; the final trace records the real portal state.
+A Gemini function-calling agent operates a local booking portal through real Playwright browser actions. It searches synthetic appointments, checks sold-out times and IANA timezones, reviews a reservation, and can submit a final confirmation. Application-enforced confirmation permission is active development in PLAN.md; the baseline relies on a prompt instruction. Every browser observation saves a screenshot; the final trace records the real portal state.
 
 ## Run locally
 
@@ -30,3 +30,10 @@ Only `.example` customer addresses are accepted. No real service, payment or not
 `npm test` covers timezone display, sold-out and invalid inputs, changed availability, duplicate confirmation, and a scripted Gemini tool sequence against a real browser and portal. The scripted model verifies tool wiring, not Gemini's live decision quality. Live Gemini proof and the new Firedrill integration remain pending. This private repository has no license pending portfolio publication decisions.
 
 Explore related applications in the [Firedrill example catalog](https://github.com/firedrill-tools/firedrill-example-catalog). Product and setup references: [Firedrill](https://firedrill.run/) and the [official developer documentation](https://docs.firedrill.run/). Use documentation matching the qualified release; this repository records its current integration limits above.
+
+
+## Development audit active
+
+The baseline at618f0d30bda08baec126a9e34a6a6e5dfe81f620 passes its original4 checks, but the current audit reproduced changed saved intent email/timezone and same-revision moved slot UTC time committing different booking details; a boolean review revision is coerced and accepted. Actual pinned Gemini2.30.0 over controlled loopback HTTP and real Chromium also accepted MAX_TOKENS Confirm booking output and created a local reservation even when the task said review only. This establishes concrete source/permission/native-completion defects; it is not live model quality evidence.
+
+PLAN.md defines strict source/review binding and current final checks, explicit app-owned confirmation scope, owned original native HTTP/usage/lifecycle and browser boundaries, rich source populations/private CLI and fresh locked distribution tasks. These fixes are pending; the existing original tests do not establish those controls. All external live credentials/semantic+billing/Firedrill/real connector/license work stays parked, with development continuing independently. No paid model or external booking was used in the audit.
