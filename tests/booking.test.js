@@ -23,16 +23,16 @@ test("sold-out, invalid timezone, duplicate and unconfirmed review are guarded",
   const reviewed = store.review("S-101", "mia@acme.example", "Europe/London", 1);
   assert.ok(reviewed.intent.token);
   assert.equal(store.read().reservations.length, 1);
-  const confirmed = store.confirm(reviewed.intent.token);
+  const confirmed = store.confirm(reviewed.intent.token, reviewed.intent.content_sha256);
   assert.equal(confirmed.reservation.id, "R-2");
-  assert.equal(store.confirm(reviewed.intent.token).error, "already_confirmed");
+  assert.equal(store.confirm(reviewed.intent.token, reviewed.intent.content_sha256).error, "already_confirmed");
   assert.equal(store.read().reservations.length, 2);
 });
 test("availability change between review and confirmation blocks booking", () => {
   const { store } = setup();
   const intent = store.review("S-103", "mia@acme.example", "America/Toronto", 1).intent;
   store.setAvailability("S-103", 0);
-  assert.equal(store.confirm(intent.token).error, "availability_changed");
+  assert.equal(store.confirm(intent.token, intent.content_sha256).error, "availability_changed");
   assert.equal(store.read().reservations.length, 1);
 });
 test("scripted Gemini function calls drive real booking pages and screenshot proof", async () => {
