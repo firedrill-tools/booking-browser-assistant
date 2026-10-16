@@ -10,8 +10,8 @@ const next=(prefix,rows)=>{let n=rows.length+1;while(rows.some(r=>r.id===`${pref
 const increment=n=>{if(n===Number.MAX_SAFE_INTEGER)throw new Error('revision_exhausted');return n+1;};
 const error=message=>({error:message});
 export class Store{
- constructor(file){const s=readSource(file);this.file=fs.realpathSync(file);this.instance=s.state.instance_id??null;this.lock=path.join(path.dirname(this.file),`.${path.basename(this.file)}.booking-lock.sqlite`);}
- snapshot(){const s=readSource(this.file);if((s.state.instance_id??null)!==this.instance)throw new Error('workspace instance changed');return s;}
+ constructor(file){const s=readSource(file);this.file=fs.realpathSync(file);this.instance=s.state.instance_id??null;this.provenance=s.state.dataset??null;this.lock=path.join(path.dirname(this.file),`.${path.basename(this.file)}.booking-lock.sqlite`);}
+ snapshot(){const s=readSource(this.file);if((s.state.instance_id??null)!==this.instance||!same(s.state.dataset??null,this.provenance))throw new Error('workspace instance changed');return s;}
  read(){return this.snapshot().state;}
  transaction(fn){
   if(fs.existsSync(this.lock)&&(!fs.lstatSync(this.lock).isFile()||fs.lstatSync(this.lock).isSymbolicLink()))throw new Error('invalid workspace mutex');

@@ -3,3 +3,7 @@ workspace.json
 artifacts/
 .env
 .DS_Store
+dist/
+workspaces/
+workspace.json.source.json
+.*.booking-lock.sqlite*

@@ -3,13 +3,14 @@ import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {validateState,hash} from './schema.js';
 import {parseJSON} from './json.js';
+import {authority} from './datasets.js';
 export const MAX_SOURCE=8*1024*1024;
 export function readSource(file){
  const initial=fs.lstatSync(file);if(!initial.isFile()||initial.isSymbolicLink()||initial.size>MAX_SOURCE)throw new Error('bounded regular source required');
  const fd=fs.openSync(file,'r');try{
   const before=fs.fstatSync(fd),bytes=fs.readFileSync(fd),after=fs.fstatSync(fd),current=fs.lstatSync(file);
   if(bytes.length>MAX_SOURCE||before.dev!==initial.dev||before.ino!==initial.ino||before.dev!==current.dev||before.ino!==current.ino||before.size!==after.size||before.mtimeMs!==after.mtimeMs||bytes.length!==before.size)throw new Error('source changed while reading');
-  return{state:validateState(parseJSON(new TextDecoder('utf-8',{fatal:true}).decode(bytes))),bytes,digest:hash(bytes),identity:`${before.dev}:${before.ino}`};
+  const state=validateState(parseJSON(new TextDecoder('utf-8',{fatal:true}).decode(bytes)));authority(file,state);return{state,bytes,digest:hash(bytes),identity:`${before.dev}:${before.ino}`};
  }finally{fs.closeSync(fd);}
 }
 export function saveSource(file,state,prior){

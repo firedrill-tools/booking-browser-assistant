@@ -4,12 +4,13 @@ A Gemini function-calling assistant searches and reserves synthetic appointments
 
 ## Run
 
-Requires Node 22.13+ and Playwright Chromium. This private development checkpoint has no license; rich datasets, private initialization and fresh distribution are still in progress in [PLAN.md](PLAN.md).
+Requires Node 22.13+ and Playwright Chromium. This private repository has no license pending portfolio publication decisions. Development status and verification are recorded in [PLAN.md](PLAN.md).
 
 ```sh
 npm ci
 npx playwright install chromium
-cp fixtures/starter.json workspace.json
+npm run workspace -- init workspaces/demo/state.json --case available-review
+export BOOKING_WORKSPACE_FILE=workspaces/demo/state.json
 npm run portal
 ```
 
@@ -26,7 +27,19 @@ npm run operate -- --allow-confirm "Review S-101 for mia@acme.example in Europe/
 
 Only synthetic `.example` contacts are accepted. The final server commit binds the reviewed payload/hash, current service and complete slot, operation ownership and explicit permission. Review reserves no capacity. Stale details, altered recipients/zones, duplicates, exhausted revisions and wrong/closed operations cannot commit. A separate synthetic human form may explicitly approve an operator's review-only proposal. These local permission markers are not real authentication. UTC instants and the selected IANA timezone remain in the reservation; the portal shows actual service duration and capacity.
 
-Strict bounded source parsing rejects duplicate JSON keys, unknown fields, invalid UTF-8, unsafe counts/revisions, incoherent history and source aliasing. Writes are staged, flushed and atomically replaced after checking the original bytes/inode. A persistent SQLite mutex serializes cooperating processes; uncooperative filesystem writers remain outside an OS boundary. The unchanged original imported reservation has unknown prior review, authorization, model and delivery evidence. Old no-UUID state has no cross-reset guarantee. Do not overwrite a running workspace to reset it.
+Strict bounded source parsing rejects duplicate JSON keys, unknown fields, invalid UTF-8, unsafe counts/revisions, incoherent history and source aliasing. Writes are staged, flushed and atomically replaced after checking the original bytes/inode. A persistent SQLite mutex serializes cooperating processes; uncooperative filesystem writers remain outside an OS boundary. The unchanged original imported reservation has unknown prior review, authorization, model and delivery evidence. Old no-UUID state has no cross-reset guarantee. Private initialization supplies a fresh instance UUID; all new reviews bind it, and imported pending reviews must be rereviewed. Do not overwrite a running workspace to reset it.
+
+## Synthetic populations and private workspaces
+
+`npm run workspace -- list` lists twelve hash-bound cases across starter, busy, ambiguous and boundary profiles. `booking-populations1.0.0` preserves 258104 original bytes, SHA256 `58aaf7c8de2b4ffaa6f4193269df73a150e70b977eb3a070b6eea7972564080b`. The busy calendar contains 51 slots, 65 prior reservations, 16 pending reviews and 144 ordered audit events. Other cases cover sold-out capacity, the Toronto DST fold, cross-date zones, changed availability, duplicates, alternate service duration/location, hostile text, Unicode and maximum revision. Imported history is fictional, with unknown prior model evidence, human authentication and external delivery. Fixture/task/scoring labels stay outside business browser/model context.
+
+```sh
+npm run workspace -- inspect workspaces/demo/state.json
+npm run workspace -- reset workspaces/demo/state.json workspaces/fresh/state.json
+npm run datasets:check
+```
+
+Initialization is model-free, exclusive and private (new directories 0700, source and provenance files 0600). Source/metadata/mutex collisions reject. Reset requires a distinct fresh destination, preserves original work/mutex/evidence and changes instance identity. Every managed source read verifies the pinned dataset and separate instance/seed provenance. Corrupt, absent, foreign or stripped authority rejects without repair; current valid business edits remain separate from original seed provenance. Two exclusive files are not a multi-file atomic transaction; partial initialization remains visible and needs a fresh destination. The unchanged original `fixtures/starter.json` remains a legacy unmanaged source.
 
 ## Native execution and evidence
 
@@ -38,6 +51,9 @@ Each run creates a UUID directory under `artifacts/` (0700) containing real view
 
 ## Verification and limits
 
-`npm test` exercises the actual pinned SDK against owned loopback HTTP and real Chromium/portal actions and captures. It covers exact source/history, independent-process serialization, review-only and confirmation permissions, original native output, limits, stale forms, foreign redirects, usage, CLI signals, cancellation during pending confirmation and partial-effect/recording/cleanup failures. Synthetic responses establish transport and application behavior, not live Gemini decision quality or billing.
+`npm run check:package` builds a portable complete source archive with an exact file/size/mode/hash manifest, extracts it outside the checkout and performs fresh locked complete and production-only installs. It runs all 73 checks and deterministic authoring, all twelve private CLI initialization/readback/reset cases, the normal installed symlink CLI with actual native SDK/HTTP/Chromium, missing-key receipt, pending-HTTP SIGTERM drain and a narrow viewport. Original delivered files and repeated portable USTAR/gzip bytes must remain unchanged. Source archive, qualification report and genuine synthetic browser captures are written under ignored `dist/`. These are private source artifacts, not a license or public release.
+
+
+`npm test` has 73 checks and exercises the actual pinned SDK against owned loopback HTTP and real Chromium/portal actions and captures. It covers exact source/history, independent-process serialization, review-only and confirmation permissions, original native output, limits, stale forms, foreign redirects, usage, CLI signals, cancellation during pending confirmation and partial-effect/recording/cleanup failures. Synthetic responses establish transport and application behavior, not live Gemini decision quality or billing.
 
 No real reservation, payment, notification or customer integration exists. Live model semantics/billing, qualified new Firedrill persisted scenarios and publication/license remain parked. See [COMPATIBILITY.md](COMPATIBILITY.md) and the [portfolio catalog](https://github.com/firedrill-tools/firedrill-example-catalog).

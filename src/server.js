@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {z} from 'zod';
 import {Store,displayTime,zones} from './state.js';
-import {same,digest,zoneSchema} from './schema.js';
+import {same,digest,zoneSchema,source} from './schema.js';
 import {parseJSON} from './json.js';
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 export const escape=value=>String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
@@ -56,7 +56,7 @@ export function createApp(file){
  app.get('/review/:token',(req,res)=>{
   const state=store.read(),op=store.operation(state,credential(req)),intent=state.intents.find(i=>i.token===req.params.token);if(!intent)return res.status(404).send(errorPage('intent_not_found'));
   if(op&&intent.scope.operation_id!==op.id)return res.status(403).send(errorPage('review_not_owned'));
-  const slot=intent.source.slot,service=intent.source.service,current=state.slots.find(s=>s.id===slot.id),stale=!same(intent.source,{service:state.service,slot:current});
+  const slot=intent.source.slot,service=intent.source.service,current=state.slots.find(s=>s.id===slot.id),stale=!same(intent.source,source(state,current));
   const decision=intent.status==='confirmed'?'<div role="status" class="notice">This reservation is already confirmed.</div>':stale?'<div role="alert" class="warning">Availability or service details changed. Return to the appointment and review again.</div>':op&&!op.allow_confirm?'<div role="status" class="notice">Review only. This visit does not allow final confirmation.</div>':`<form method="post" action="/confirm/${intent.token}"><input type="hidden" name="intent_hash" value="${intent.content_sha256}"><button>Confirm booking</button></form>`;
   res.send(layout('Confirm reservation',`<a class="back" href="/slots/${encodeURIComponent(slot.id)}">← Appointment</a><div class="eyebrow">REVIEW / ${escape(intent.id)}</div><h1>Review your reservation.</h1><p class="intro">Nothing is reserved until you confirm. Availability and these exact details are checked again at the final step.</p><section class="panel confirm"><div class="panel-head"><h2>${escape(service.name)}</h2><span>STEP 2 / 2</span></div><dl><div><dt>Slot</dt><dd>${escape(slot.id)}</dd></div><div><dt>Local time</dt><dd>${escape(displayTime(slot.starts_at_utc,intent.timezone))}</dd></div><div><dt>Timezone</dt><dd>${escape(intent.timezone)}</dd></div><div><dt>UTC</dt><dd>${escape(slot.starts_at_utc)}</dd></div><div><dt>Customer</dt><dd>${escape(intent.email)}</dd></div></dl>${decision}</section>`));
  });

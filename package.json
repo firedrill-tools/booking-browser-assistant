@@ -1,12 +1,16 @@
 {
   "name": "booking-browser-assistant",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
     "portal": "node src/server.js",
     "operate": "node src/operator.js",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test --test-concurrency=1 tests/*.test.js",
+    "workspace": "node src/workspace.js",
+    "datasets:check": "node scripts/build-datasets.mjs --check",
+    "package:source": "node scripts/package.mjs",
+    "check:package": "node scripts/check-package.mjs"
   },
   "dependencies": {
     "@google/genai": "2.30.0",
