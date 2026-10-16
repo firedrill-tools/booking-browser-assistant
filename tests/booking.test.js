@@ -35,42 +35,13 @@ test("availability change between review and confirmation blocks booking", () =>
   assert.equal(store.confirm(intent.token, intent.content_sha256).error, "availability_changed");
   assert.equal(store.read().reservations.length, 1);
 });
-test("scripted Gemini function calls drive real booking pages and screenshot proof", async () => {
-  const { dir, file, store } = setup();
-  const server = await startServer(file, 0);
-  const baseUrl = `http://127.0.0.1:${server.address().port}`;
-  const actions = [
-    ["browser_click", { role: "link", name: "Review S-101 →" }],
-    ["browser_fill", { label: "Customer email", value: "mia@acme.example" }],
-    ["browser_select", { label: "Display timezone", option: "Europe/London" }],
-    ["browser_click", { role: "button", name: "Review reservation" }],
-    ["browser_click", { role: "button", name: "Confirm booking" }]
-  ];
-  let round = 0;
-  const client = { models: { generateContent: async ({ contents, config }) => {
-    assert.equal(config.tools[0].functionDeclarations.length, 4);
-    if (round > 0) assert.equal(contents.at(-1).parts[0].functionResponse.name, actions[round - 1][0]);
-    const action = actions[round++];
-    return action ? { functionCalls: [{ name: action[0], args: action[1], id: `call-${round}` }], candidates: [{ content: { role: "model", parts: [{ functionCall: { name: action[0], args: action[1], id: `call-${round}` } }] } }] }
-      : { functionCalls: [], text: "Reservation R-2 confirmed.", usageMetadata: { promptTokenCount: 0, candidatesTokenCount: 0 }, candidates: [{ content: { role: "model", parts: [{ text: "Reservation R-2 confirmed." }] } }] };
-  } } };
-  try {
-    const search = await fetch(`${baseUrl}/?date=2026-11-03`);
-    assert.match(await search.text(), /Review S-101/);
-    const { outputDir, result } = await runAssistant("Confirm booking S-101 for Mia", { baseUrl, client, model: "scripted-offline", outputRoot: dir });
-    assert.match(result.final_url, /\/reservations\/R-2/);
-    assert.match(result.trace.at(-1).text, /R-2/);
-    assert.equal(store.read().reservations.length, 2);
-    assert.equal(store.read().reservations[1].timezone, "Europe/London");
-    assert.equal(fs.readdirSync(outputDir).filter((name) => name.endsWith(".png")).length, 6);
-    assert.equal(JSON.parse(fs.readFileSync(path.join(outputDir, "trace.json"))).response, "Reservation R-2 confirmed.");
-    // The confirmation page remains usable at a narrow viewport.
-    const { chromium } = await import("playwright");
-    const mobileBrowser = await chromium.launch({ headless: true });
-    try {
-      const mobilePage = await mobileBrowser.newPage({ viewport: { width: 390, height: 844 } });
-      await mobilePage.goto(`${baseUrl}/reservations/R-2`);
-      assert.equal(await mobilePage.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false);
-    } finally { await mobileBrowser.close(); }
-  } finally { await new Promise((resolve) => server.close(resolve)); }
+test("actual pinned Gemini function calls drive real booking pages with explicit confirmation and screenshot proof", async t => {
+  const {environment} = await import("./helpers.js");
+  const {store,options,requests,trace} = await environment(t);
+  const {outputDir,result} = await runAssistant("Confirm booking S-101 for mia@acme.example in Europe/London",options);
+  assert.match(result.final_url,/\/reservations\/R-2/);
+  assert.equal(store.read().reservations.length,2);assert.equal(store.read().reservations[1].timezone,"Europe/London");
+  assert.equal(fs.readdirSync(outputDir).filter(n=>n.endsWith('.png')).length,6);assert.equal(requests.length,6);
+  const receipt=trace();assert.equal(receipt.status,'completed');assert.ok(receipt.cleanupConfirmed);assert.equal(receipt.calls[0].response.body.unknown_original.retained,true);assert.equal(receipt.reportedUsage.input.value,60);assert.equal(receipt.reportedUsage.costUsd,null);assert.equal(result.business.reservationIds[0],'R-2');assert.ok(!JSON.stringify(receipt).includes('synthetic-booking-key'));
+  const {chromium}=await import('playwright');const mobile=await chromium.launch({headless:true});try{const page=await mobile.newPage({viewport:{width:390,height:844}});await page.goto(options.portalUrl+'/reservations/R-2');assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);}finally{await mobile.close();}
 });

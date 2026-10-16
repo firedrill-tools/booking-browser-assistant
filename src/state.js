@@ -18,10 +18,10 @@ export class Store{
   try{fs.closeSync(fs.openSync(this.lock,'wx',0o600));}catch(e){if(e.code!=='EEXIST')throw e;}
   const db=new DatabaseSync(this.lock);try{db.exec('PRAGMA busy_timeout=5000; BEGIN IMMEDIATE');const prior=this.snapshot(),{result,dirty}=fn(prior.state);if(dirty)saveSource(this.file,prior.state,prior);db.exec('COMMIT');return structuredClone(result);}catch(e){try{db.exec('ROLLBACK');}catch{}throw e;}finally{db.close();}
  }
- operation(state,credential){
+ operation(state,credential,allowClosed=false){
   if(credential===null)return null;
   if(typeof credential!=='string'||!/^[a-f0-9]{64}$/.test(credential))throw new Error('unknown_operation');
-  const op=(state.operations??[]).find(o=>o.credential_sha256===hash(credential));if(!op)throw new Error('unknown_operation');if(op.status!=='active')throw new Error('operation_closed');return op;
+  const op=(state.operations??[]).find(o=>o.credential_sha256===hash(credential));if(!op)throw new Error('unknown_operation');if(op.status!=='active'&&!allowClosed)throw new Error('operation_closed');return op;
  }
  registerOperation(taskHash,allowConfirm){
   digest.parse(taskHash);if(typeof allowConfirm!=='boolean')throw new Error('allowConfirm must be a boolean');

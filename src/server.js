@@ -36,7 +36,7 @@ export function createApp(file){
  app.use('/assets',express.static(path.join(root,'public')));
  app.post('/api/operator-sessions',(req,res)=>{const b=registration.parse(req.body);res.status(201).json(store.registerOperation(b.task_sha256,b.allow_confirm));});
  app.post('/api/operator-sessions/close',(req,res)=>{z.strictObject({}).parse(req.body);res.json(store.closeOperation(credential(req)));});
- app.get('/api/source',(req,res)=>{const s=store.snapshot();store.operation(s.state,credential(req));res.json({synthetic:true,version:1,instance_id:s.state.instance_id??null,sha256:s.digest,body_base64:s.bytes.toString('base64')});});
+ app.get('/api/source',(req,res)=>{const s=store.snapshot();store.operation(s.state,credential(req),true);res.json({synthetic:true,version:1,instance_id:s.state.instance_id??null,sha256:s.digest,body_base64:s.bytes.toString('base64')});});
  app.get('/api/state',(req,res)=>{const state=store.read();store.operation(state,credential(req));res.json(state);});
  app.get('/',(req,res)=>{
   const state=store.read();store.operation(state,credential(req));const query=new URL(req.originalUrl,'http://local').searchParams;
