@@ -7,3 +7,6 @@ dist/
 workspaces/
 workspace.json.source.json
 .*.booking-lock.sqlite*
+
+node_modules/
+.runs/

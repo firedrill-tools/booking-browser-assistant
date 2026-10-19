@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "2026-10-14",
+  "name": "booking-browser-assistant \u2014 actual owned portal and native browser agent",
+  "target": {
+    "kind": "command",
+    "argv": [
+      "node",
+      "firedrill/target.mjs"
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "available-review",
+      "name": "available-review operate",
+      "input": {
+        "caseId": "available-review",
+        "action": "operate",
+        "task": "Review S-101 for mia@acme.example in Europe/London. Leave the proposal for a separate confirmation.",
+        "allowConfirm": false
+      }
+    },
+    {
+      "id": "sold-out",
+      "name": "sold-out operate",
+      "input": {
+        "caseId": "sold-out",
+        "action": "operate",
+        "task": "Inspect S-102. Report sold-out availability without creating a review or booking.",
+        "allowConfirm": false
+      }
+    },
+    {
+      "id": "busy-calendar",
+      "name": "busy-calendar inspect",
+      "input": {
+        "caseId": "busy-calendar",
+        "action": "inspect",
+        "task": "Inspect the current fictional portal without model execution or changes.",
+        "allowConfirm": false
+      }
+    }
+  ],
+  "repetitions": 1,
+  "concurrency": 1,
+  "limits": {
+    "timeoutMs": 240000,
+    "maxRuns": 3,
+    "maxOutputBytes": 4194304
+  }
+}
