@@ -1,6 +1,8 @@
-# Booking browser assistant
+# Booking browser agent with Gemini and Playwright
 
 A Gemini function-calling assistant searches and reserves synthetic appointments through actual Chromium actions on a local server-rendered portal. Reviews capture the exact service, slot, customer, UTC instant and explicit IANA display timezone. Final confirmation requires a separate application-owned permission and a fresh server-side check of the entire reviewed source.
+
+Simulate this Gemini API AI agent with [Firedrill](https://firedrill.run/), a simulation platform for AI agents. Start with the [Firedrill setup and simulation guide](firedrill/README.md); your coding agent can operate it while this application's runner stays in your repository or CI.
 
 ## Run
 
@@ -56,7 +58,7 @@ Each run creates a UUID directory under `artifacts/` (0700) containing real view
 
 `npm test` has 73 checks and exercises the actual pinned SDK against owned loopback HTTP and real Chromium/portal actions and captures. It covers exact source/history, independent-process serialization, review-only and confirmation permissions, original native output, limits, stale forms, foreign redirects, usage, CLI signals, cancellation during pending confirmation and partial-effect/recording/cleanup failures. Synthetic responses establish transport and application behavior, not live Gemini decision quality or billing.
 
-No real reservation, payment, notification or customer integration exists. Live model semantics/billing, qualified new Firedrill persisted scenarios and publication/license remain parked. See [COMPATIBILITY.md](COMPATIBILITY.md) and the [portfolio catalog](https://github.com/firedrill-tools/firedrill-example-catalog).
+No real reservation, payment, notification or customer integration exists. Live model semantics/billing, authenticated Firedrill persistence verification and publication/license remain parked. See [COMPATIBILITY.md](COMPATIBILITY.md) and the [portfolio catalog](https://github.com/firedrill-tools/firedrill-example-catalog).
 
 ## Current Firedrill integration
 
