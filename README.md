@@ -4,9 +4,11 @@ A Gemini function-calling assistant searches and reserves synthetic appointments
 
 Simulate this Gemini API AI agent with [Firedrill](https://firedrill.run/), a simulation platform for AI agents. Start with the [Firedrill setup and simulation guide](firedrill/README.md); your coding agent can operate it while this application's runner stays in your repository or CI.
 
+This example repository is publicly viewable. A project license has not been selected.
+
 ## Run
 
-Requires Node 22.13+ and Playwright Chromium. This private repository has no license pending portfolio publication decisions. Development status and verification are recorded in [PLAN.md](PLAN.md).
+Requires Node 22.13+ and Playwright Chromium. This repository is publicly viewable; no project license has been selected. Development status and verification are recorded in [PLAN.md](PLAN.md).
 
 ```sh
 npm ci
@@ -53,12 +55,12 @@ Each run creates a UUID directory under `artifacts/` (0700) containing real view
 
 ## Verification and limits
 
-`npm run check:package` builds a portable complete source archive with an exact file/size/mode/hash manifest, extracts it outside the checkout and performs fresh locked complete and production-only installs. It runs all 73 checks and deterministic authoring, all twelve private CLI initialization/readback/reset cases, the normal installed symlink CLI with actual native SDK/HTTP/Chromium, missing-key receipt, pending-HTTP SIGTERM drain and a narrow viewport. Original delivered files and repeated portable USTAR/gzip bytes must remain unchanged. Source archive, qualification report and genuine synthetic browser captures are written under ignored `dist/`. These are private source artifacts, not a license or public release.
+`npm run check:package` builds a portable complete source archive with an exact file/size/mode/hash manifest, extracts it outside the checkout and performs fresh locked complete and production-only installs. It runs all 73 checks and deterministic authoring, all twelve private CLI initialization/readback/reset cases, the normal installed symlink CLI with actual native SDK/HTTP/Chromium, missing-key receipt, pending-HTTP SIGTERM drain and a narrow viewport. Original delivered files and repeated portable USTAR/gzip bytes must remain unchanged. Source archive, qualification report and genuine synthetic browser captures are written under ignored `dist/`. These are source archives, not a project license or a package-registry release.
 
 
 `npm test` has 73 checks and exercises the actual pinned SDK against owned loopback HTTP and real Chromium/portal actions and captures. It covers exact source/history, independent-process serialization, review-only and confirmation permissions, original native output, limits, stale forms, foreign redirects, usage, CLI signals, cancellation during pending confirmation and partial-effect/recording/cleanup failures. Synthetic responses establish transport and application behavior, not live Gemini decision quality or billing.
 
-No real reservation, payment, notification or customer integration exists. Live model semantics/billing, authenticated Firedrill persistence verification and publication/license remain parked. See [COMPATIBILITY.md](COMPATIBILITY.md) and the [portfolio catalog](https://github.com/firedrill-tools/firedrill-example-catalog).
+No real reservation, payment, notification or customer integration exists. Live model semantics/billing, authenticated Firedrill persistence verification and license remain parked. See [COMPATIBILITY.md](COMPATIBILITY.md) and the [portfolio catalog](https://github.com/firedrill-tools/firedrill-example-catalog).
 
 ## Current Firedrill integration
 
