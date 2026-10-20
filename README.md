@@ -60,7 +60,7 @@ Each run creates a UUID directory under `artifacts/` (0700) containing real view
 
 `npm test` has 73 checks and exercises the actual pinned SDK against owned loopback HTTP and real Chromium/portal actions and captures. It covers exact source/history, independent-process serialization, review-only and confirmation permissions, original native output, limits, stale forms, foreign redirects, usage, CLI signals, cancellation during pending confirmation and partial-effect/recording/cleanup failures. Synthetic responses establish transport and application behavior, not live Gemini decision quality or billing.
 
-No real reservation, payment, notification or customer integration exists. Live model semantics/billing, authenticated Firedrill persistence verification and license remain parked. See [COMPATIBILITY.md](COMPATIBILITY.md) and the [portfolio catalog](https://github.com/firedrill-tools/firedrill-example-catalog).
+No real reservation, payment, notification or customer integration exists. Live model semantics/billing, authenticated Firedrill persistence verification and license remain parked. See [COMPATIBILITY.md](COMPATIBILITY.md) and the [Firedrill examples](https://docs.firedrill.run/guides/examples).
 
 ## Current Firedrill integration
 
